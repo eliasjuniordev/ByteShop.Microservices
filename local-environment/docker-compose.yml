@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # O banco NoSQL para o nosso serviço de Catálogo
+  catalogdb:
+    image: mongo:latest
+    container_name: byteshop-catalogdb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - byteshop-network
+
+      # NOVO: O banco em memória para o nosso serviço de Carrinho
+  cartdb:
+    image: redis:alpine
+    container_name: byteshop-cartdb
+    ports:
+      - "6379:6379"
+    networks:
+      - byteshop-network
+
+      # NOVO: Pedidos (Relacional)
+  orderingdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: byteshop-orderingdb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=ByteShopSenhaForte123!
+    ports:
+      - "1434:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - byteshop-network
+
+      # NOVO: Mensageria (RabbitMQ)
+  eventbus:
+    image: rabbitmq:3-management-alpine
+    container_name: byteshop-eventbus
+    ports:
+      - "5672:5672"   # Porta do protocolo de mensagens (AMQP)
+      - "15672:15672" # Porta do Painel de Controle (Web Dashboard)
+    networks:
+      - byteshop-network
+
+networks:
+  byteshop-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  mssql_data:

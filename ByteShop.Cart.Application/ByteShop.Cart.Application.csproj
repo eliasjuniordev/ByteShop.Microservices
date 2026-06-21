@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit.Abstractions" Version="8.5.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ByteShop.BuildingBlocks.EventBus\ByteShop.BuildingBlocks.EventBus.csproj" />
+    <ProjectReference Include="..\ByteShop.Cart.Domain\ByteShop.Cart.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

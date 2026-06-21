@@ -1,0 +1,6 @@
+@ByteShop.Cart.API_HostAddress = http://localhost:5283
+
+GET {{ByteShop.Cart.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
