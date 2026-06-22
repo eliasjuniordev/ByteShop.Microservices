@@ -23,7 +23,20 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMassTransit(x =>
 {
 
-    x.AddConsumer<ByteShop.Cart.Application.Consumers.PedidoCriadoConsumer>();
+   
+    x.AddConsumer<ByteShop.Cart.Application.Consumers.PedidoCriadoConsumer>(cfg =>
+    {
+       
+        cfg.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
+
+        cfg.UseCircuitBreaker(cb =>
+        {
+            cb.TrackingPeriod = TimeSpan.FromMinutes(1);
+            cb.TripThreshold = 15;
+            cb.ActiveThreshold = 5;
+            cb.ResetInterval = TimeSpan.FromSeconds(30);
+        });
+    });
 
     x.UsingRabbitMq((context, cfg) =>
     {
@@ -40,7 +53,7 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
-// --- CONFIGURAÇÃO DO PIPELINE HTTP ---
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

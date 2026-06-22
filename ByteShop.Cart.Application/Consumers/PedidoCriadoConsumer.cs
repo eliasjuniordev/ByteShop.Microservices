@@ -19,7 +19,6 @@ namespace ByteShop.Cart.Application.Consumers
       
             var clienteId = context.Message.ClienteId;
 
-            
             await _carrinhoRepository.LimparCarrinhoAsync(clienteId);
         }
     }
