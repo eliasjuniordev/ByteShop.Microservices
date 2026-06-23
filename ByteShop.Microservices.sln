@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteShop.Ordering.API", "By
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteShop.BuildingBlocks.EventBus", "ByteShop.BuildingBlocks.EventBus\ByteShop.BuildingBlocks.EventBus.csproj", "{27E9FC22-EF82-41B2-A4C8-66FB2E777846}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ByteShop.ApiGateway", "ByteShop.ApiGateway\ByteShop.ApiGateway.csproj", "{2FDCFB66-1CB7-4748-AF82-87C430D9D798}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{27E9FC22-EF82-41B2-A4C8-66FB2E777846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27E9FC22-EF82-41B2-A4C8-66FB2E777846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27E9FC22-EF82-41B2-A4C8-66FB2E777846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FDCFB66-1CB7-4748-AF82-87C430D9D798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FDCFB66-1CB7-4748-AF82-87C430D9D798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FDCFB66-1CB7-4748-AF82-87C430D9D798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FDCFB66-1CB7-4748-AF82-87C430D9D798}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{6B9C2D36-E6F9-4FF2-ACF5-53E0829954A3} = {A1B40851-CF2D-477A-B9DF-CC402DECFF2E}
 		{CB37A6AB-1EA8-4C4E-92E6-EE7568F267F3} = {A1B40851-CF2D-477A-B9DF-CC402DECFF2E}
 		{27E9FC22-EF82-41B2-A4C8-66FB2E777846} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2FDCFB66-1CB7-4748-AF82-87C430D9D798} = {CB43DC18-222E-4ABF-8AE6-18FDB7BE3820}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF4D3487-2A16-45E4-8A20-3EC483CCF34B}
