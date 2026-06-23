@@ -9,7 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var redisConnectionString = builder.Configuration.GetConnectionString("RedisConnection") ?? "localhost:6379";
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var configuration = ConfigurationOptions.Parse(redisConnectionString, true);
+    configuration.AbortOnConnectFail = false; // <-- A MAGIA ESTÁ AQUI
+    return ConnectionMultiplexer.Connect(configuration);
+});
 
 
 builder.Services.AddScoped<ICarrinhoRepository, CarrinhoRepository>();
@@ -50,6 +55,7 @@ builder.Services.AddMassTransit(x =>
         cfg.ConfigureEndpoints(context);
     });
 });
+
 
 var app = builder.Build();
 

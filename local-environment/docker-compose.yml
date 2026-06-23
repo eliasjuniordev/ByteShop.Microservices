@@ -45,6 +45,65 @@ services:
     networks:
       - byteshop-network
 
+      # ... seus bancos de dados e rabbitmq que já estão no arquivo ...
+
+  # 5. Serviço de Carrinho
+  cart-api:
+    image: byteshop-cart-api
+    container_name: byteshop-cart-api
+    build:
+      context: ../
+      dockerfile: ByteShop.Cart.API/Dockerfile # <-- Caminho físico real
+    ports:
+      - "7011:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__RedisConnection=cartdb:6379,abortConnect=false
+      - RabbitMq__Host=rabbitmq://eventbus:5672
+    depends_on:
+      - cartdb
+      - eventbus
+    networks:
+      - byteshop-network
+
+  # 6. Serviço de Pedidos
+  ordering-api:
+    image: byteshop-ordering-api
+    container_name: byteshop-ordering-api
+    build:
+      context: ../
+      dockerfile: ByteShop.Ordering.API/Dockerfile # <-- Caminho físico real
+    ports:
+      - "7110:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=orderingdb,1433;Database=ByteShopOrderingDb;User Id=sa;Password=ByteShopSenhaForte123!;TrustServerCertificate=True;
+      - RabbitMq__Host=rabbitmq://eventbus:5672
+    depends_on:
+      - orderingdb
+      - eventbus
+    networks:
+      - byteshop-network
+
+  # 7. API Gateway (YARP)
+  api-gateway:
+    image: byteshop-api-gateway
+    container_name: byteshop-api-gateway
+    build:
+      context: ../
+      dockerfile: ByteShop.ApiGateway/Dockerfile # <-- Caminho físico real
+    ports:
+      - "7108:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ReverseProxy__Clusters__carrinho-cluster__Destinations__destination1__Address=http://cart-api:8080
+      - ReverseProxy__Clusters__pedidos-cluster__Destinations__destination1__Address=http://ordering-api:8080
+    depends_on:
+      - cart-api
+      - ordering-api
+    networks:
+      - byteshop-network
+
 networks:
   byteshop-network:
     driver: bridge
