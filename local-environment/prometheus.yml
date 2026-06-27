@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 5s # Vai recolher métricas a cada 5 segundos
+
+scrape_configs:
+  - job_name: 'byteshop-apis'
+    static_configs:
+      - targets: 
+        - 'byteshop-api-gateway:8080'
+        - 'byteshop-cart-api:8080'
+        - 'byteshop-ordering-api:8080'

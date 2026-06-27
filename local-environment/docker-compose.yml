@@ -103,6 +103,31 @@ services:
       - ordering-api
     networks:
       - byteshop-network
+      
+      # 8. Prometheus (Colecionador de Métricas)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: byteshop-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # Injeta o nosso ficheiro de configuração
+    networks:
+      - byteshop-network
+
+  # 9. Grafana (Painel de Controlo)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: byteshop-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    networks:
+      - byteshop-network
 
 networks:
   byteshop-network:

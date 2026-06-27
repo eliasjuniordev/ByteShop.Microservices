@@ -3,6 +3,7 @@ using ByteShop.Cart.Application.Services;
 using ByteShop.Cart.Domain.Interfaces;
 using ByteShop.Cart.Infrastructure.Repositories;
 using MassTransit;
+using OpenTelemetry.Metrics;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,7 +58,17 @@ builder.Services.AddMassTransit(x =>
 });
 
 
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics =>
+    {
+        metrics.AddAspNetCoreInstrumentation(); // Coleta métricas nativas de requisições HTTP do .NET
+        metrics.AddPrometheusExporter(); // Prepara os dados para o Prometheus raspar
+    });
+
+
 var app = builder.Build();
+
+app.UseOpenTelemetryPrometheusScrapingEndpoint(); //
 
 
 if (app.Environment.IsDevelopment())

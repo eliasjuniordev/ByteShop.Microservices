@@ -5,6 +5,7 @@ using ByteShop.Ordering.Infrastructure.Context;
 using ByteShop.Ordering.Infrastructure.Repositories;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,17 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics =>
+    {
+        metrics.AddAspNetCoreInstrumentation(); // Coleta métricas nativas de requisições HTTP do .NET
+        metrics.AddPrometheusExporter(); // Prepara os dados para o Prometheus raspar
+    });
+
 var app = builder.Build();
+
+
+app.MapPrometheusScrapingEndpoint(); //
 
 // --- CONFIGURAÇÃO DO PIPELINE HTTP ---
 if (app.Environment.IsDevelopment())
